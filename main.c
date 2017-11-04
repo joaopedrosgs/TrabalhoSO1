@@ -24,14 +24,15 @@ void *Oxygen(void *v) {
         sem_post(&sem_h);
         sem_post(&sem_h);
 
-        printf("H20 Formado\n");
+        printf("H20 Formado\nThread retornando (Oxigenio)\n");
 
         pthread_mutex_unlock(&lock);
     } else {
         pthread_mutex_unlock(&lock);
         sem_wait(&sem_o);
+        printf("Thread retornando (Oxigenio)\n");
+
     }
-    printf("Thread retornando (Oxigenio)\n");
 
 
 }
@@ -49,14 +50,16 @@ void *Hidrogen(void *v) {
         sem_post(&sem_h);
         sem_post(&sem_h);
 
-        printf("H20 Formado\n");
+        printf("H20 Formado\nThread retornando (Hidrogenio)\n");
 
         pthread_mutex_unlock(&lock);
     } else {
         pthread_mutex_unlock(&lock);
         sem_wait(&sem_h);
+        printf("Thread retornando (Hidrogenio)\n");
+
     }
-    printf("Thread retornando (Hidrogenio)\n");
+
 
 
 }
@@ -65,7 +68,7 @@ int main() {
 
     srand(time(NULL));   // should only be called once
     int r = rand() % 2;
-    int tamanho = 10;
+    int tamanho = 100;
     pthread_t pthread[tamanho];
     sem_init(&sem_o, 1, 0);
     sem_init(&sem_h, 1, 1);
