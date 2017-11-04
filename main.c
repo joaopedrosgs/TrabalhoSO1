@@ -24,6 +24,7 @@ void *Oxygen(void *v) {
         sem_post(&sem_h);
         sem_post(&sem_h);
 
+        printf("H20 Formado\n");
 
         pthread_mutex_unlock(&lock);
     } else {
