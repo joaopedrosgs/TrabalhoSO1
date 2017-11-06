@@ -88,9 +88,7 @@ int main() {
     numero_h--;
   }
   for (tamanho = MAX_THREADS; tamanho >= 0; tamanho--) {
-    pthread_join(pthread[tamanho], NULL);  // poderia ser join, mas podem haver
-                                           // threads paradas esperando serem
-                                           // conectadas
+    pthread_join(pthread[tamanho], NULL);  
     printf("Join na thread %d\n", tamanho);
   }
 
