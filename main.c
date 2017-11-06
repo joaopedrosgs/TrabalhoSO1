@@ -2,7 +2,7 @@
 #include <pthread.h>
 #include <stdlib.h>
 #include <semaphore.h>
-#include <zconf.h>
+#include <unistd.h>
 
 #define MAX_THREADS 20
 int numero_h = 0, numero_o = 0, h_gerado = 0, o_gerado = 0;
@@ -19,8 +19,6 @@ void *Oxygen(void *v) {
     if (numero_o >= 1 && numero_h >= 2) {
         numero_o--;
         numero_h -= 2;
-
-        sem_post(&sem_o);
         sem_post(&sem_h);
         sem_post(&sem_h);
 
@@ -50,7 +48,6 @@ void *Hidrogen(void *v) {
 
         sem_post(&sem_o);
         sem_post(&sem_h);
-        sem_post(&sem_h);
 
         printf("H20 Formado\nThread retornando (Hidrogenio)\n");
         formados++;
@@ -70,8 +67,8 @@ int main() {
     srand(time(NULL));
     int tamanho = MAX_THREADS;
     pthread_t pthread[tamanho + 1];
-    sem_init(&sem_o, 1, 1);
-    sem_init(&sem_h, 1, 2);
+    sem_init(&sem_o, 1, 0);
+    sem_init(&sem_h, 1, 0);
 
     while (tamanho >= 0) {
         if (rand() % 2) {
@@ -81,9 +78,10 @@ int main() {
             o_gerado++;
             pthread_create(&pthread[tamanho], NULL, Oxygen, NULL);
         }
+
         tamanho--;
     }
-    sleep(1);
+    usleep(100000);
     for (tamanho = MAX_THREADS; tamanho >= 0; tamanho--) {
         pthread_cancel(
                 pthread[tamanho]); // poderia ser join, mas podem haver threads paradas esperando serem conectadas
